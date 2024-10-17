@@ -1,9 +1,10 @@
 package pixiv
 
 import (
+	"context"
 	"fmt"
 	"io"
-	"io/ioutil"
+	"net"
 	"net/http"
 	"net/url"
 	"sync"
@@ -59,15 +60,19 @@ func (p *Pixiv) SetProxy(Proxy string) error {
 		// 解析代理URL
 		proxyURL, err := url.Parse(Proxy)
 		if err != nil {
-			panic(err)
+			return err
 		}
 		dialer, err := proxy.FromURL(proxyURL, proxy.Direct)
 		if err != nil {
 			return err
 		}
 		transport := &http.Transport{
-			Dial: dialer.Dial,
+			//Dial: dialer.Dial,
+			DialContext: func(ctx context.Context, network, addr string) (net.Conn, error) {
+				return dialer.Dial(network, addr)
+			},
 		}
+
 		p.HttpClient.Transport = transport
 		return nil
 	} else {
@@ -96,14 +101,19 @@ func (p *Pixiv) Test() {
 
 // 获取body内容
 func GetBody(body io.Reader) string {
-	b, err := ioutil.ReadAll(body)
+	b, err := io.ReadAll(body)
 	if err != nil {
-		return err.Error()
+		return ""
 	}
 	return string(b)
 }
 
 // 获取系列小说
-func (p *Pixiv) Get(SeriesID string) {
+func (p *Pixiv) GetSeriesNovels(SeriesID string) {
+
+}
+
+// 获取用户小说
+func (p *Pixiv) GetUserNovels(UserID string) {
 
 }
