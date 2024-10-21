@@ -511,7 +511,6 @@ func (p *Pixiv) GetNovelContent(NovelID string) (NovelContent, Error) {
 		return content, Err
 	}
 	RawnContent = math[1]
-
 	// 小说正文
 	TextContent := gjson.Get(RawnContent, "text").String()
 	content.Images = make(map[string]string)

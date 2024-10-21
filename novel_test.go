@@ -77,6 +77,7 @@ func TestPixiv(t *testing.T) {
 		fmt.Println(err)
 		return
 	}
+
 	os.WriteFile("./1.png", data, 0644)
 
 }
