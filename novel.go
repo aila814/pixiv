@@ -189,7 +189,6 @@ func convertTimeToBeijing(timeStr string) string {
 	if err != nil {
 		return timeStr
 	}
-
 	// 将时区调整为东八区
 	beijingTime := t.In(time.FixedZone("CST", 8*60*60))
 
