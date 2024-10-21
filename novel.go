@@ -518,9 +518,7 @@ func (p *Pixiv) GetNovelContent(NovelID string) (NovelContent, Error) {
 	content.Images = make(map[string]string)
 	// 小说插图
 	gjson.Get(RawnContent, "images").ForEach(func(key, value gjson.Result) bool {
-		// image := gjson.Get(value.String(), "urls.original").String()
 		image := value.Get("urls.original").String()
-		// novelContent.Images = append(novelContent.Images, image)
 		content.Images[key.String()] = image
 		return true
 	})
