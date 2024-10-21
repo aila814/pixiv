@@ -12,6 +12,7 @@ func TestPixiv(t *testing.T) {
 	//var a NovelInfo
 
 	app := NewApp()
+
 	app.SetProxy("socks5://10.10.10.2:1080")
 	app.SetRefreshToken("JMfu2g_lzwHS7ojLnUA3mifsBRPQLgbfqQLZ9W1M73E")
 	app.SetAccessToken(token)

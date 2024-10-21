@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/tidwall/gjson"
+	"golang.org/x/net/proxy"
 	"io"
 	"net"
 	"net/http"
@@ -13,8 +14,6 @@ import (
 	"regexp"
 	"sync"
 	"time"
-
-	"golang.org/x/net/proxy"
 )
 
 type Pixiv struct {
