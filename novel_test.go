@@ -1,8 +1,6 @@
 package pixiv
 
 import (
-	"fmt"
-	"os"
 	"testing"
 )
 
@@ -72,12 +70,12 @@ func TestPixiv(t *testing.T) {
 	//}
 	//fmt.Println(novelInfo)
 
-	data, err := app.GetIllustByte("https://i.pximg.net/img-original/img/2024/07/25/03/09/47/120858495_p0.png")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	os.WriteFile("./1.png", data, 0644)
+	//data, err := app.GetIllustByte("https://i.pximg.net/img-original/img/2024/07/25/03/09/47/120858495_p0.png")
+	//if err != nil {
+	//	fmt.Println(err)
+	//	return
+	//}
+	//
+	//os.WriteFile("./1.png", data, 0644)
 
 }
