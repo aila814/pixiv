@@ -48,7 +48,6 @@ socks5://123:123@127.0.0.1:8080
 func (p *Pixiv) SetProxy(Proxy string) error {
 	p.Mux.Lock()
 	defer p.Mux.Unlock()
-
 	proxyUrl, err := url.Parse(Proxy)
 	if err != nil {
 		return err
@@ -81,7 +80,6 @@ func (p *Pixiv) SetProxy(Proxy string) error {
 				return dialer.Dial(network, addr)
 			},
 		}
-
 		p.HttpClient.Transport = transport
 		return nil
 	} else {
@@ -104,7 +102,6 @@ func (p *Pixiv) Test() {
 	}
 	body := GetBody(resq.Body)
 	fmt.Println(body)
-
 }
 
 // 获取body内容
