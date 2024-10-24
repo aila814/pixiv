@@ -1,8 +1,8 @@
 package pixiv
 
 type Error struct {
-	// 403 速率过快
-	// 404不存在
+	// 429 速率过快
+	// 404 不存在
 	// 400 认证失效或无效的令牌
 	Code int    // http状态码
 	Body string // http内容
