@@ -76,6 +76,7 @@ func (p *Pixiv) GetIllustGif(IllustID string) (IllustGif, Error) {
 		Err Error
 		i   IllustGif
 	)
+
 	Url := fmt.Sprintf("%s/v1/ugoira/metadata?illust_id=%s", ApiAddress, IllustID)
 	req, err := http.NewRequest("GET", Url, nil)
 	if err != nil {
