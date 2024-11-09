@@ -6,7 +6,6 @@ import (
 	"testing"
 )
 
-// test
 var token = "084SzMXHagZ8BwfKsvmeUflJNg1nDe6DADv1o-t5_vE"
 
 func TestPixiv(t *testing.T) {
