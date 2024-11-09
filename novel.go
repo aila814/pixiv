@@ -29,7 +29,7 @@ const (
 )
 
 func NewApp() *Pixiv {
-	return &Pixiv{HttpClient: &http.Client{Timeout: 3000 * time.Millisecond}}
+	return &Pixiv{HttpClient: &http.Client{}}
 }
 
 // 设置超时时间 毫秒
@@ -137,12 +137,13 @@ func (p *Pixiv) GetAccessToken() error {
 	from.Add("include_policy", "true")
 	from.Add("refresh_token", p.RefreshToken)
 	req, err := http.NewRequest("POST", "https://oauth.secure.pixiv.net/auth/token", bytes.NewBufferString(from.Encode()))
-	req.Header.Set("accept-language", "zh_CN")
-	req.Header.Set("User-Agent", "PixivAndroidApp/5.0.234")
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	if err != nil {
 		return err
 	}
+	req.Header.Set("accept-language", "zh_CN")
+	req.Header.Set("User-Agent", "PixivAndroidApp/5.0.234")
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
 	resp, err := p.HttpClient.Do(req)
 	if err != nil {
 		return err
@@ -162,12 +163,13 @@ func (p *Pixiv) GetAccessToken() error {
 func (p *Pixiv) TestAccessToken() bool {
 	Url := fmt.Sprintf("%s/v1/illust/recommended?include_privacy_policy=true&filter=for_android&include_ranking_illusts=true", ApiAddress)
 	req, err := http.NewRequest("GET", Url, nil)
-	req.Header.Set("accept-language", "zh_CN")
-	req.Header.Set("User-Agent", "PixivAndroidApp/5.0.234 ")
-	req.Header.Set("Authorization", "Bearer "+p.AccessToken)
 	if err != nil {
 		return false
 	}
+	req.Header.Set("accept-language", "zh_CN")
+	req.Header.Set("User-Agent", "PixivAndroidApp/5.0.234 ")
+	req.Header.Set("Authorization", "Bearer "+p.AccessToken)
+
 	resp, err := p.HttpClient.Do(req)
 	if err != nil {
 		return false
@@ -213,14 +215,15 @@ func (p *Pixiv) GetSeriesNovels(SeriesID string, OnlyDetail bool) (SeriesNovel, 
 
 		Url := fmt.Sprintf("%s/v2/novel/series?series_id=%s&last_order=%d", ApiAddress, SeriesID, last_order)
 		req, err := http.NewRequest("GET", Url, nil)
-		req.Header.Set("accept-language", "zh_CN")
-		req.Header.Set("User-Agent", "PixivAndroidApp/5.0.234 ")
-		req.Header.Set("Authorization", "Bearer "+p.AccessToken)
 		if err != nil {
 			Err.Err = err
 			Err.Code = 0
 			return SeriesInfo, Err
 		}
+		req.Header.Set("accept-language", "zh_CN")
+		req.Header.Set("User-Agent", "PixivAndroidApp/5.0.234 ")
+		req.Header.Set("Authorization", "Bearer "+p.AccessToken)
+
 		resp, err := p.HttpClient.Do(req)
 		if err != nil {
 			Err.Err = err
@@ -302,14 +305,13 @@ func (p *Pixiv) GetUserNovels(UserID string) (UserNovel, Error) {
 	for {
 		Url := fmt.Sprintf("%s/v1/user/novels?user_id=%s&offset=%d", ApiAddress, UserID, last_order)
 		req, err := http.NewRequest("GET", Url, nil)
-		req.Header.Set("accept-language", "zh_CN")
-		req.Header.Set("User-Agent", "PixivAndroidApp/5.0.234 ")
-		req.Header.Set("Authorization", "Bearer "+p.AccessToken)
 		if err != nil {
 			Err.Err = err
 			return userNovel, Err
 		}
-
+		req.Header.Set("accept-language", "zh_CN")
+		req.Header.Set("User-Agent", "PixivAndroidApp/5.0.234 ")
+		req.Header.Set("Authorization", "Bearer "+p.AccessToken)
 		resp, err := p.HttpClient.Do(req)
 		if err != nil {
 			Err.Err = err
@@ -378,13 +380,14 @@ func (p *Pixiv) GetNovelDetail(NovelID string) (NovelInfo, Error) {
 	)
 	Url := fmt.Sprintf("%s/v2/novel/detail?novel_id=%s", ApiAddress, NovelID)
 	req, err := http.NewRequest("GET", Url, nil)
-	req.Header.Set("accept-language", "zh_CN")
-	req.Header.Set("User-Agent", "PixivAndroidApp/5.0.234 ")
-	req.Header.Set("Authorization", "Bearer "+p.AccessToken)
 	if err != nil {
 		Err.Err = err
 		return info, Err
 	}
+	req.Header.Set("accept-language", "zh_CN")
+	req.Header.Set("User-Agent", "PixivAndroidApp/5.0.234 ")
+	req.Header.Set("Authorization", "Bearer "+p.AccessToken)
+
 	resp, err := p.HttpClient.Do(req)
 	if err != nil {
 		Err.Err = err
@@ -431,13 +434,14 @@ func (p *Pixiv) GetUserDetail(UserID string) (UserInfo, Error) {
 
 	Url := fmt.Sprintf("%s/v1/user/detail?filter=for_android&user_id=%s", ApiAddress, UserID)
 	req, err := http.NewRequest("GET", Url, nil)
-	req.Header.Set("accept-language", "zh_CN")
-	req.Header.Set("User-Agent", "PixivAndroidApp/5.0.234 ")
-	req.Header.Set("Authorization", "Bearer "+p.AccessToken)
 	if err != nil {
 		Err.Err = err
 		return info, Err
 	}
+	req.Header.Set("accept-language", "zh_CN")
+	req.Header.Set("User-Agent", "PixivAndroidApp/5.0.234 ")
+	req.Header.Set("Authorization", "Bearer "+p.AccessToken)
+
 	resp, err := p.HttpClient.Do(req)
 	if err != nil {
 		Err.Err = err
@@ -461,6 +465,8 @@ func (p *Pixiv) GetUserDetail(UserID string) (UserInfo, Error) {
 	info.Account = gjson.Get(body, "user.account").String()
 	info.Caption = gjson.Get(body, "user.comment").String()
 	info.TotalNovels = gjson.Get(body, "profile.total_novels").Int()
+	Err.Code = resp.StatusCode
+	Err.Body = body
 	return info, Err
 }
 
@@ -474,13 +480,14 @@ func (p *Pixiv) GetNovelContent(NovelID string) (NovelContent, Error) {
 
 	Url := fmt.Sprintf("%s/webview/v2/novel?id=%s", ApiAddress, NovelID)
 	req, err := http.NewRequest("GET", Url, nil)
-	req.Header.Set("accept-language", "zh_CN")
-	req.Header.Set("User-Agent", "PixivAndroidApp/5.0.234 ")
-	req.Header.Set("Authorization", "Bearer "+p.AccessToken)
 	if err != nil {
 		Err.Err = err
 		return content, Err
 	}
+	req.Header.Set("accept-language", "zh_CN")
+	req.Header.Set("User-Agent", "PixivAndroidApp/5.0.234 ")
+	req.Header.Set("Authorization", "Bearer "+p.AccessToken)
+
 	resp, err := p.HttpClient.Do(req)
 	if err != nil {
 		Err.Err = err
@@ -523,30 +530,4 @@ func (p *Pixiv) GetNovelContent(NovelID string) (NovelContent, Error) {
 	Err.Body = body
 	Err.Err = nil
 	return content, Err
-}
-
-// 获取插图数据
-func (p *Pixiv) GetIllustByte(Url string) ([]byte, error) {
-	req, err := http.NewRequest("GET", Url, nil)
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("Host", "i.pximg.net")
-	req.Header.Set("referer", "https://app-api.pixiv.net/")
-	req.Header.Set("accept-language", "zh_CN")
-	req.Header.Set("User-Agent", "PixivAndroidApp/5.0.234 ")
-	resp, err := p.HttpClient.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("服务器错误响应: %s,code: %d", resp.Status, resp.StatusCode)
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-	return body, nil
 }

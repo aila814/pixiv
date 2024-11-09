@@ -1,7 +1,7 @@
 package pixiv
 
 type Error struct {
-	// 403 速率过快
+	// 429 速率过快
 	// 404不存在
 	// 400 认证失效或无效的令牌
 	Code int    // http状态码
@@ -52,4 +52,23 @@ type NovelContent struct {
 	RawnContent string            // 小说json正文
 	Content     string            // 小说正文
 	Images      map[string]string // 小说插图
+}
+
+// 插图信息
+type Illust struct {
+	UserID  string              // 用户id
+	ID      string              //插图id
+	Width   int64               //宽
+	Height  int64               //宽
+	Title   string              //插图标题
+	Type    string              //类型 illust=静态图  ugoira=动图GIF
+	Caption string              // 插图简介
+	Page    map[string]string   //插图url
+	Pages   []map[string]string //插图url
+}
+
+// GIF插图信息
+type IllustGif struct {
+	ZipUrl string             // zip文件url
+	Pages  []map[string]int64 //文件名-间隔
 }
