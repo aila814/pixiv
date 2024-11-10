@@ -40,7 +40,7 @@ type NovelInfo struct {
 	UserID   string   //用户id
 	ID       string   // 小说id
 	Title    string   // 小说标题
-	Length   string   // 小说字数
+	Length   int64    // 小说字数
 	Caption  string   // 小说简介
 	Date     string   // 发布时间
 	Tags     []string // 标签

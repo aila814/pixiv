@@ -264,7 +264,7 @@ func (p *Pixiv) GetSeriesNovels(SeriesID string, OnlyDetail bool) (SeriesNovel, 
 				UserID:   value.Get("user.id").String(),
 				ID:       value.Get("id").String(),
 				Title:    value.Get("title").String(),
-				Length:   value.Get("text_length").String(),
+				Length:   value.Get("text_length").Int(),
 				Caption:  value.Get("caption").String(),
 				Date:     convertTimeToBeijing(value.Get("create_date").String()),
 				Tags:     tagArry,
@@ -350,7 +350,7 @@ func (p *Pixiv) GetUserNovels(UserID string) (UserNovel, Error) {
 				UserID:   value.Get("user.id").String(),
 				ID:       value.Get("id").String(),
 				Title:    value.Get("title").String(),
-				Length:   value.Get("text_length").String(),
+				Length:   value.Get("text_length").Int(),
 				Caption:  value.Get("caption").String(),
 				Date:     convertTimeToBeijing(value.Get("create_date").String()),
 				Tags:     tagArry,
@@ -415,7 +415,7 @@ func (p *Pixiv) GetNovelDetail(NovelID string) (NovelInfo, Error) {
 	info.Caption = gjson.Get(body, "novel.caption").String()
 	info.ID = NovelID
 	//字数
-	info.Length = gjson.Get(body, "novel.text_length").String()
+	info.Length = gjson.Get(body, "novel.text_length").Int()
 	//发布时间
 	info.Date = convertTimeToBeijing(gjson.Get(body, "novel.create_date").String())
 	//标题
