@@ -515,7 +515,7 @@ func (p *Pixiv) GetNovelContent(NovelID string) (NovelContent, Error) {
 	if len(math) != 2 {
 		Err.Err = errors.New("匹配正文失败")
 		Err.Body = body
-		Err.Code = 200
+		Err.Code = resp.StatusCode
 		return content, Err
 	}
 	RawnContent = math[1]
