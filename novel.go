@@ -24,7 +24,7 @@ type Pixiv struct {
 }
 
 const (
-	Version           = "v0.1.1"
+	Version           = "v0.1.7"
 	ApiAddress string = "https://app-api.pixiv.net"
 )
 
