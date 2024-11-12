@@ -499,6 +499,12 @@ func (p *Pixiv) GetNovelContent(NovelID string) (NovelContent, Error) {
 	}
 	body := GetBody(resp.Body)
 	defer resp.Body.Close()
+	if len(body) == 0 {
+		Err.Code = resp.StatusCode
+		Err.Body = body
+		Err.Err = errors.New("小说原始正文内容为空")
+		return content, Err
+	}
 	if resp.StatusCode != http.StatusOK {
 		Err.Code = resp.StatusCode
 		Err.Body = body
@@ -509,6 +515,7 @@ func (p *Pixiv) GetNovelContent(NovelID string) (NovelContent, Error) {
 		}
 		return content, Err
 	}
+
 	// 匹配正文
 	re := regexp.MustCompile("novel:(.*),")
 	math := re.FindStringSubmatch(body)
