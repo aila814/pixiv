@@ -261,14 +261,15 @@ func (p *Pixiv) GetSeriesNovels(SeriesID string, OnlyDetail bool) (SeriesNovel, 
 				return true
 			})
 			NovelInfoList = append(NovelInfoList, NovelInfo{
-				UserID:   value.Get("user.id").String(),
-				ID:       value.Get("id").String(),
-				Title:    value.Get("title").String(),
-				Length:   value.Get("text_length").Int(),
-				Caption:  value.Get("caption").String(),
-				Date:     convertTimeToBeijing(value.Get("create_date").String()),
-				Tags:     tagArry,
-				SeriesID: value.Get("series.id").String(),
+				UserID:      value.Get("user.id").String(),
+				ID:          value.Get("id").String(),
+				Title:       value.Get("title").String(),
+				Length:      value.Get("text_length").Int(),
+				Caption:     value.Get("caption").String(),
+				Date:        convertTimeToBeijing(value.Get("create_date").String()),
+				Tags:        tagArry,
+				SeriesID:    value.Get("series.id").String(),
+				SeriesTitle: value.Get("series.title").String(),
 			})
 			return true
 		})
@@ -347,14 +348,15 @@ func (p *Pixiv) GetUserNovels(UserID string) (UserNovel, Error) {
 				return true
 			})
 			NovelInfoList = append(NovelInfoList, NovelInfo{
-				UserID:   value.Get("user.id").String(),
-				ID:       value.Get("id").String(),
-				Title:    value.Get("title").String(),
-				Length:   value.Get("text_length").Int(),
-				Caption:  value.Get("caption").String(),
-				Date:     convertTimeToBeijing(value.Get("create_date").String()),
-				Tags:     tagArry,
-				SeriesID: value.Get("series.id").String(),
+				UserID:      value.Get("user.id").String(),
+				ID:          value.Get("id").String(),
+				Title:       value.Get("title").String(),
+				Length:      value.Get("text_length").Int(),
+				Caption:     value.Get("caption").String(),
+				Date:        convertTimeToBeijing(value.Get("create_date").String()),
+				Tags:        tagArry,
+				SeriesID:    value.Get("series.id").String(),
+				SeriesTitle: value.Get("series.title").String(),
 			})
 			return true
 		})
@@ -364,7 +366,7 @@ func (p *Pixiv) GetUserNovels(UserID string) (UserNovel, Error) {
 		last_order = last_order + 30
 	}
 	userNovel.UserName = userName
-	userNovel.Account = userAccount
+	userNovel.AccountID = userAccount
 	userNovel.Count = Count
 	userNovel.Novels = NovelInfoList
 	Err.Code = 200
@@ -422,6 +424,8 @@ func (p *Pixiv) GetNovelDetail(NovelID string) (NovelInfo, Error) {
 	info.Title = gjson.Get(body, "novel.title").String()
 	// 用户id
 	info.UserID = gjson.Get(body, "novel.user.id").String()
+	info.SeriesID = gjson.Get(body, "series.id").String()
+	info.SeriesTitle = gjson.Get(body, "series.title").String()
 	return info, Err
 }
 
@@ -462,7 +466,7 @@ func (p *Pixiv) GetUserDetail(UserID string) (UserInfo, Error) {
 
 	info.UserID = gjson.Get(body, "user.id").Int()
 	info.UserName = gjson.Get(body, "user.name").String()
-	info.Account = gjson.Get(body, "user.account").String()
+	info.AccountID = gjson.Get(body, "user.account").String()
 	info.Caption = gjson.Get(body, "user.comment").String()
 	info.TotalNovels = gjson.Get(body, "profile.total_novels").Int()
 	Err.Code = resp.StatusCode

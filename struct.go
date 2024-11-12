@@ -14,21 +14,21 @@ type UserInfo struct {
 	UserID      int64  //用户id
 	UserName    string //用户名
 	Caption     string //用户简介
-	Account     string //账户名
+	AccountID   string // 账户id
 	TotalNovels int64  //用户小说数量
 }
 
 // 用户小说
 type UserNovel struct {
-	UserName string // 用户名
-	Account  string //用户账号
-	Count    int64  //用户小说数量
-	Novels   []NovelInfo
+	UserName  string // 用户名
+	AccountID string // 账户id
+	Count     int64  //用户小说数量
+	Novels    []NovelInfo
 }
 
 // 系列小说
 type SeriesNovel struct {
-	UserID  string
+	UserID  string // 用户id
 	Title   string // 系列标题
 	Caption string //系列简介
 	Count   int64  //系列小说数量
@@ -37,14 +37,15 @@ type SeriesNovel struct {
 
 // 单篇小说信息
 type NovelInfo struct {
-	UserID   string   //用户id
-	ID       string   // 小说id
-	Title    string   // 小说标题
-	Length   int64    //小说字数
-	Caption  string   // 小说简介
-	Date     string   // 发布时间
-	Tags     []string // 标签
-	SeriesID string   //系列id(如果是在系列中)
+	UserID      string   //用户id
+	ID          string   // 小说id
+	Title       string   // 小说标题
+	Length      int64    //小说字数
+	Caption     string   // 小说简介
+	Date        string   // 发布时间
+	Tags        []string // 标签
+	SeriesID    string   //系列id(如果是在系列中)
+	SeriesTitle string   //系列标题(如果是在系列中)
 }
 
 // 小说正文
