@@ -24,7 +24,7 @@ type Pixiv struct {
 }
 
 const (
-	Version           = "v0.1.9"
+	Version           = "v0.2.0"
 	ApiAddress string = "https://app-api.pixiv.net"
 )
 
@@ -160,11 +160,11 @@ func (p *Pixiv) GetAccessToken() error {
 }
 
 // 检测AccessToken是否有效
-func (p *Pixiv) TestAccessToken() bool {
+func (p *Pixiv) TestAccessToken() (bool, error) {
 	Url := fmt.Sprintf("%s/v1/illust/recommended?include_privacy_policy=true&filter=for_android&include_ranking_illusts=true", ApiAddress)
 	req, err := http.NewRequest("GET", Url, nil)
 	if err != nil {
-		return false
+		return false, err
 	}
 	req.Header.Set("accept-language", "zh_CN")
 	req.Header.Set("User-Agent", "PixivAndroidApp/5.0.234 ")
@@ -172,14 +172,15 @@ func (p *Pixiv) TestAccessToken() bool {
 
 	resp, err := p.HttpClient.Do(req)
 	if err != nil {
-		return false
+		return false, err
 	}
 
 	defer resp.Body.Close()
-	if resp.StatusCode == 200 {
-		return true
+	if resp.StatusCode != 200 {
+
+		return false, fmt.Errorf("%s", GetBody(resp.Body))
 	}
-	return false
+	return true, nil
 }
 
 // 转换时间到北京时间格式
